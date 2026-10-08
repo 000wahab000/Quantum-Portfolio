@@ -35,6 +35,8 @@ Settings (gear icon): set "Artifact review" and "Terminal" to "Request review", 
 Do everything in @TEAMS/TEAM-4-antigravity-frontend/PROMPT-1-U12-shell-form-mocks.md
 ```
 
+If the file name does not turn into a chip/link, delete the `@...` part, type `@`, type `PROMPT-1`, click the file, then press Enter.
+
 The colours and look are in DESIGN.md. The agent reads it first by itself. When it shows a plan or asks to run something, click Accept / Run / Proceed.
 
 EXCEPT: if a command contains `rm`, `del`, `rmdir`, `Remove-Item`, `--force`, `reset --hard` or `.env`, click Reject and paste the help text from Step 7.
