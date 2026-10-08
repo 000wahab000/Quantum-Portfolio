@@ -14,10 +14,10 @@ execution: code
 
 - **Objective:** A non-quantum investor can choose NIFTY 50 stocks and investment rules in a web app, get a portfolio that QAOA genuinely selected, and see beside it an honest comparison with classical solvers, the effect of hardware noise, and how every answer performs on held-out data. This is the PS-03 submission for Qiskit Fall Fest 2026 (team 4 GOATS).
 - **Means:** a FastAPI backend with our own QAOA loop on Qiskit 2.5 V2 primitives (KTD1), one shared QUBO built from a pluggable constraint registry (KTD3), and a React app. Four teams build it in parallel against interfaces that are frozen first (KTD15).
-- **Product authority:** [docs/research/00-problem-statement.md](../research/00-problem-statement.md) (PS-03) comes first, then this Product Contract, then the team POC ([docs/research/01-poc-pdf.md](../research/01-poc-pdf.md)). Interface shapes are owned by [docs/teams/CONTRACTS.md](../teams/CONTRACTS.md).
+- **Product authority:** [docs/research/00-problem-statement.md](../research/00-problem-statement.md) (PS-03) comes first, then this Product Contract, then the team POC ([docs/research/01-poc-pdf.md](../research/01-poc-pdf.md)). Interface shapes are owned by [TEAMS/CONTRACTS.md](../../TEAMS/CONTRACTS.md).
 - **Execution profile:** 3 teams use Google Antigravity (TEAM-2, TEAM-3, TEAM-4) and 1 uses Claude Code (TEAM-1, the integrator). Coding subagents run on Sonnet and research subagents on Haiku. Cost is kept low.
 - **Stop conditions:** stop and escalate to TEAM-1 when any of these would happen:
-  - an interface in `docs/teams/CONTRACTS.md` would change;
+  - an interface in `TEAMS/CONTRACTS.md` would change;
   - a PS-03 "Not allowed" rule would be bent;
   - a new dependency is needed.
 - **Who finishes:** TEAM-1 merges each team's branch, runs the Verification Contract, and owns the demo build.
@@ -171,7 +171,7 @@ flowchart LR
 
 ### Dependencies / Assumptions
 
-- The build is split across four teams working in parallel: TEAM-1 on Claude Code, TEAM-2/3/4 on Antigravity. Modules are separated behind the interfaces in [docs/teams/CONTRACTS.md](../teams/CONTRACTS.md).
+- The build is split across four teams working in parallel: TEAM-1 on Claude Code, TEAM-2/3/4 on Antigravity. Modules are separated behind the interfaces in [TEAMS/CONTRACTS.md](../../TEAMS/CONTRACTS.md).
 - Today's constituent list is applied to historical prices. This survivorship bias is stated in the app, not corrected. Constituent changes are listed in [docs/research/06-nifty50-costs.md](../research/06-nifty50-costs.md).
 - The stack is verified on the team laptop: Python 3.13, qiskit 2.5.2, qiskit-aer 0.17.2, qiskit-ibm-runtime 0.50.0, cvxpy 1.9.3, yfinance 1.7.0, fastapi 0.143.0 ([docs/research/08-env-spike.md](../research/08-env-spike.md)).
 - The solver path does not depend on the unsupported or archived qiskit-finance, qiskit-algorithms or qiskit-optimization ([docs/research/05-stack-state.md](../research/05-stack-state.md)).
@@ -248,7 +248,7 @@ flowchart LR
   - Governs R14.
 - KTD13. **Jobs:** an in-process `ThreadPoolExecutor(max_workers=1)` with an in-memory job store. A cancel flag is checked in the optimiser callback, and the UI polls every 500 ms. Governs R19.
 - KTD14. **Frontend:** React 19 + Vite 8 + TypeScript + Tailwind 4 (`@tailwindcss/vite`) + Recharts 3. Mock mode replays `contracts/api-examples/*.json`, and the dev server proxies `/api` to `:8000`. Governs R18–R22.
-- KTD15. **Ownership is by team and directory, and interfaces are frozen first.** [docs/teams/CONTRACTS.md](../teams/CONTRACTS.md) is authoritative, and only TEAM-1 changes it. Each team works on `team-N/*` branches, and TEAM-1 merges. (session-settled: user-approved — chosen over one shared branch with no ownership: four agent-driven teams editing the same files would collide.) Governs R5–R22 delivery.
+- KTD15. **Ownership is by team and directory, and interfaces are frozen first.** [TEAMS/CONTRACTS.md](../../TEAMS/CONTRACTS.md) is authoritative, and only TEAM-1 changes it. Each team works on `team-N/*` branches, and TEAM-1 merges. (session-settled: user-approved — chosen over one shared branch with no ownership: four agent-driven teams editing the same files would collide.) Governs R5–R22 delivery.
 - KTD16. **Studies are precomputed by a script into JSON and served read-only.** The instance set is 10 random 10-asset, K=5 instances drawn from the estimation window, with fixed seeds. Studies cover depth p = 1–5 × {standard, XY}, optimiser × init, and noise. Governs R12, R13, R21.
 
 ### High-Level Technical Design
@@ -327,8 +327,9 @@ Team timeline (the event clock starts at T0):
 ```text
 AGENTS.md                      # shared rules (both tools)
 CLAUDE.md                      # @AGENTS.md + Claude-only notes
-docs/teams/CONTRACTS.md        # frozen interfaces (TEAM-1 owns)
-docs/teams/TEAM-1.md .. TEAM-4.md
+TEAMS/README.md                # start page for teammates
+TEAMS/CONTRACTS.md             # frozen interfaces (TEAM-1 owns)
+TEAMS/TEAM-N-<tool>-<area>/    # one folder per team: START-HERE.md + PROMPT-*.md
 contracts/api-examples/*.json  # example payloads (TEAM-1); frontend mocks + API tests
 backend/
   pyproject.toml uv.lock .python-version
@@ -369,7 +370,7 @@ frontend/
 | U-ID | Title | Team | Key files | Depends on |
 |---|---|---|---|---|
 | U1 | Scaffold + frozen contracts + example payloads | TEAM-1 (prework) | `backend/qportfolio/contracts.py`, `problem.py`, `contracts/api-examples/` | — |
-| U2 | Shared agent rules + team briefs | TEAM-1 (prework) | `AGENTS.md`, `CLAUDE.md`, `docs/teams/` | U1 spec |
+| U2 | Shared agent rules + team briefs | TEAM-1 (prework) | `AGENTS.md`, `CLAUDE.md`, `TEAMS/` | U1 spec |
 | U3 | Data layer: universe, prices, windows, μ/Σ | TEAM-2 | `backend/qportfolio/data/{universe,prices,risk}.py` | U1 |
 | U4 | Pre-screen, costs, allocation, out-of-sample | TEAM-2 | `backend/qportfolio/data/{screen,costs,allocate,evaluate}.py` | U1, U3 |
 | U5 | QUBO builder, constraint registry, penalties, Ising | TEAM-1 | `backend/qportfolio/qubo/` | U1 |
@@ -405,7 +406,7 @@ frontend/
 
 **Approach:**
 1. Run `uv init`, then `uv python pin 3.13`, then add the verified pins from the Dependencies section, with `httpx2` as a dev dependency.
-2. Write pydantic models in `contracts.py` that mirror [docs/teams/CONTRACTS.md](../teams/CONTRACTS.md) one-to-one.
+2. Write pydantic models in `contracts.py` that mirror [TEAMS/CONTRACTS.md](../../TEAMS/CONTRACTS.md) one-to-one.
 3. Write `problem.py` with the `Problem` dataclass and the exact `evaluate(selection)`: objective per KTD2, plus feasibility and violations for cardinality, sector cap and target return. TEAM-3 depends on it from T0.
 4. Hand-write example JSON for a realistic 10-asset, K=5 instance. The values must be internally consistent.
 
@@ -426,12 +427,12 @@ frontend/
 
 **Requirements:** delivery of KTD15. **Dependencies:** U1 spec (`CONTRACTS.md`).
 
-**Files:** `AGENTS.md`, `CLAUDE.md`, `docs/teams/CONTRACTS.md`, `docs/teams/TEAM-1.md`, `docs/teams/TEAM-2.md`, `docs/teams/TEAM-3.md`, `docs/teams/TEAM-4.md`.
+**Files:** `AGENTS.md`, `CLAUDE.md`, `TEAMS/README.md`, `TEAMS/CONTRACTS.md`, and per team a folder (`TEAMS/TEAM-1-claude-quantum-core/`, `TEAM-2-antigravity-data-api/`, `TEAM-3-antigravity-classical/`, `TEAM-4-antigravity-frontend/`) holding `START-HERE.md` and `PROMPT-*.md` (TEAM-4 also `DESIGN.md`).
 
 **Approach:**
 1. `AGENTS.md` holds the ownership table, the PS-03 honesty rules, banned APIs, Windows notes, commands and git rules. Keep it under 200 lines.
 2. `CLAUDE.md` contains `@AGENTS.md` plus Claude-only notes.
-3. Each brief contains: role, owned and do-not-touch paths, units, settings for the team's tool, a kickoff prompt, per-phase follow-up prompts, verification, definition of done, and handoff steps ([docs/research/07-agent-tooling.md](../research/07-agent-tooling.md)).
+3. Each team folder has a `START-HERE.md` (step-by-step setup, safety settings, how to run a prompt, check, save and share, troubleshooting; role, owned and do-not-touch paths, units, definition of done) and one self-contained `PROMPT-N-*.md` per unit plus `PROMPT-FIX-integration.md` ([docs/research/07-agent-tooling.md](../research/07-agent-tooling.md)).
 
 **Test expectation:** none, because this unit is documentation. Verify by reading it cold: a teammate can start their agent from their brief alone.
 
@@ -681,7 +682,7 @@ frontend/
 - `backend/tests/test_api.py`
 
 **Approach:**
-1. Routes follow [docs/teams/CONTRACTS.md](../teams/CONTRACTS.md).
+1. Routes follow [TEAMS/CONTRACTS.md](../../TEAMS/CONTRACTS.md).
 2. The job store is a dict guarded by a lock, plus a `ThreadPoolExecutor(1)`.
 3. On error, the job holds a plain-language message and the server log holds the traceback.
 4. The studies endpoint reads `backend/data/studies/*.json`.

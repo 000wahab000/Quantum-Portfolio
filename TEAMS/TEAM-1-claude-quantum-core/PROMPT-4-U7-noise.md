@@ -7,8 +7,8 @@ Integrate phase (T0+2.5h to T0+4h). Depends on U6. You can run this while waitin
 ## Read first
 
 - `AGENTS.md`
-- `docs/teams/CONTRACTS.md`: section 1.3 (`noisy_solve`), section 2.6 (`qaoa.noise` block)
-- `docs/teams/TEAM-1.md`, `docs/research/08-env-spike.md` (Noise, gotchas 4 and 6)
+- `TEAMS/CONTRACTS.md`: section 1.3 (`noisy_solve`), section 2.6 (`qaoa.noise` block)
+- `TEAMS/TEAM-1-claude-quantum-core/START-HERE.md`, `docs/research/08-env-spike.md` (Noise, gotchas 4 and 6)
 - Plan `docs/plans/2026-10-08-2115-feat-quantum-portfolio-optimiser-plan.md`: KTD10, section "U7. Noise runner (fake backend)"
 
 ## Process
@@ -59,4 +59,13 @@ The noisy 10-asset run finishes in under 60 s.
 
 - [ ] All scenarios above exist as pytest tests and pass; full suite green.
 - [ ] Cancel works during a noisy optimisation (flag checked per evaluation).
-- [ ] Branch `team-1/noise`, committed, PR to `main`; summary posted.
+- [ ] Committed and pushed to `team-1/work`; 3-line summary printed (Wahab opens the PR and merges).
+
+## When finished
+
+1. Run the verify command above.
+2. If it fails, fix it only inside your owned paths and run it again (up to 3 tries). If it still fails, stop and print the error.
+3. When it passes: `git add -A`, then `git commit -m "team-1: U7 <short summary>"`.
+4. Then `git push -u origin team-1/work`. Never force-push. Never push to `main`.
+5. Print a 3-line summary: what was built, the test result, and any known gap.
+6. If git reports a conflict or asks for a login, stop and say so. Do not resolve it; Wahab does.

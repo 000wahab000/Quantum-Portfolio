@@ -7,8 +7,8 @@ Always-on rules for every agent in this repo (Google Antigravity and Claude Code
 Quantum Portfolio Optimiser: our PS-03 entry for Qiskit Fall Fest 2026 (team 4 GOATS). A FastAPI backend turns NIFTY 50 prices into one QUBO of stock picks (risk-weighted variance minus return, plus pluggable constraint terms) and solves it with our own QAOA loop on Qiskit 2.5 V2 primitives and with three classical baselines (brute force, relaxation + rounding, simulated annealing). A React app shows the portfolio, efficient frontier, convergence, sampled bitstrings, noise effect, out-of-sample scores and an honest verdict. Four teams build in parallel against frozen interfaces.
 
 - Plan (requirements R1-R22, decisions KTD1-KTD16, units U1-U15, Verification Contract, Definition of Done): [docs/plans/2026-10-08-2115-feat-quantum-portfolio-optimiser-plan.md](docs/plans/2026-10-08-2115-feat-quantum-portfolio-optimiser-plan.md)
-- Frozen interfaces (Python and HTTP): [docs/teams/CONTRACTS.md](docs/teams/CONTRACTS.md)
-- Team briefs: [TEAM-1](docs/teams/TEAM-1.md) (quantum core + integrator), [TEAM-2](docs/teams/TEAM-2.md) (data + API), [TEAM-3](docs/teams/TEAM-3.md) (classical + metrics), [TEAM-4](docs/teams/TEAM-4.md) (frontend)
+- Frozen interfaces (Python and HTTP): [TEAMS/CONTRACTS.md](TEAMS/CONTRACTS.md)
+- Team briefs: [TEAM-1](TEAMS/TEAM-1-claude-quantum-core/START-HERE.md) (quantum core + integrator), [TEAM-2](TEAMS/TEAM-2-antigravity-data-api/START-HERE.md) (data + API), [TEAM-3](TEAMS/TEAM-3-antigravity-classical/START-HERE.md) (classical + metrics), [TEAM-4](TEAMS/TEAM-4-antigravity-frontend/START-HERE.md) (frontend). Start here: [TEAMS/README.md](TEAMS/README.md). Each team folder `TEAMS/TEAM-N-*/` holds its `START-HERE.md` and the per-unit `PROMPT-*.md` files.
 - Problem statement (product authority): [docs/research/00-problem-statement.md](docs/research/00-problem-statement.md)
 - Verified versions and working patterns: [docs/research/08-env-spike.md](docs/research/08-env-spike.md)
 
@@ -21,7 +21,7 @@ Quantum Portfolio Optimiser: our PS-03 entry for Qiskit Fall Fest 2026 (team 4 G
 | `backend/scripts/{smoke.py,run_studies.py}`, `backend/data/studies/` | TEAM-1 |
 | `contracts/` (example payloads) | TEAM-1 |
 | `backend/pyproject.toml`, `backend/uv.lock`, `backend/.python-version`, `.gitignore`, `README.md` | TEAM-1 |
-| `AGENTS.md`, `CLAUDE.md`, `docs/` | TEAM-1 |
+| `AGENTS.md`, `CLAUDE.md`, `docs/`, `TEAMS/` | TEAM-1 |
 | `backend/qportfolio/data/`, `backend/qportfolio/api/` | TEAM-2 (Antigravity) |
 | `backend/scripts/fetch_snapshot.py`, `backend/data/nifty50.csv`, `backend/data/snapshot/` | TEAM-2 |
 | `backend/qportfolio/classical/`, `backend/qportfolio/{metrics.py,frontier.py,verdict.py}` | TEAM-3 (Antigravity) |
@@ -34,7 +34,7 @@ Quantum Portfolio Optimiser: our PS-03 entry for Qiskit Fall Fest 2026 (team 4 G
 ## Golden rules
 
 1. Edit only the paths your team owns.
-2. `docs/teams/CONTRACTS.md` is frozen. Only TEAM-1 changes it. If it looks wrong or incomplete, keep building against the current version and ask TEAM-1 in chat. Do not work around it silently.
+2. `TEAMS/CONTRACTS.md` is frozen. Only TEAM-1 changes it. If it looks wrong or incomplete, keep building against the current version and ask TEAM-1 in chat. Do not work around it silently.
 3. No new dependencies (Python or npm) without TEAM-1. The only approved frontend stack is React 19, Vite 8, TypeScript, Tailwind 4 with `@tailwindcss/vite`, Recharts 3 (KTD14).
 4. PS-03 honesty rules (automated gates exist; see Verification Contract in the plan):
    - Never solve classically and wrap the answer in a circuit. QAOA's portfolio is the best feasible bitstring sampled from the optimised circuit.
@@ -93,11 +93,11 @@ Quantum Portfolio Optimiser: our PS-03 entry for Qiskit Fall Fest 2026 (team 4 G
 
 ## Git rules
 
-- Branch per task: `team-N/<short-topic>` (for example `team-2/data-layer`).
+- Branch: every team works on one branch, `team-N/work`, for all its prompts. Agents commit and push it at the end of each prompt ("When finished" in the prompt file).
 - Run `git pull origin main` before starting each task. Commit small and often. Commit before every agent run so a bad run is one `git restore` away.
 - Never force-push. Never rewrite shared history.
 - Never commit `.env`, `.venv`, `node_modules`, `backend/data/cache/`.
-- Open a PR to `main`. TEAM-1 merges after `uv run pytest -q` (backend) or `npm run build` (frontend) passes. Do not merge your own PR.
+- TEAM-1 (Wahab) opens the PRs, merges after `uv run pytest -q` (backend) or `npm run build` (frontend) passes, and resolves conflicts. Teammates and their agents never open PRs, never merge, never push to `main`. If git reports a conflict, stop and say so.
 
 ## Agent safety (Antigravity)
 

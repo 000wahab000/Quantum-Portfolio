@@ -2,13 +2,13 @@ Paste this whole file into your agent (or @-mention it). Team 2, unit U11.
 
 # TEAM-2 · U11 — API + job runner + studies endpoint
 
-Integrate phase (T0+2.5h to T0+4h). Depends on U1 (stub `pipeline.run`) to build; U10 for real results. Branch `team-2/api`.
+Integrate phase (T0+2.5h to T0+4h). Depends on U1 (stub `pipeline.run`) to build; U10 for real results. Branch `team-2/work`.
 
 ## Read first
 
 - `AGENTS.md`
-- `docs/teams/CONTRACTS.md`: section 1.5 (`pipeline.run`, `Cancelled`), all of section 2 (2.1 to 2.7)
-- `docs/teams/TEAM-2.md`
+- `TEAMS/CONTRACTS.md`: section 1.5 (`pipeline.run`, `Cancelled`), all of section 2 (2.1 to 2.7)
+- `TEAMS/TEAM-2-antigravity-data-api/DETAILS-for-the-agent.md`
 - Plan `docs/plans/2026-10-08-2115-feat-quantum-portfolio-optimiser-plan.md`: KTD13, section "U11. API + job runner + studies endpoint", AE5
 - `contracts/api-examples/*.json` (fixtures)
 
@@ -23,7 +23,7 @@ Serve the contract over HTTP with background jobs, polling and cancel.
 ## Owned paths / Do not touch
 
 - Owned: `backend/qportfolio/api/`, `backend/qportfolio/data/`, `backend/tests/test_api.py` (plus the other TEAM-2 paths).
-- Do not touch: `contracts.py`, `problem.py`, `pipeline.py`, `qubo/`, `quantum/`, `classical/`, `metrics.py`, `frontier.py`, `verdict.py`, `contracts/`, `backend/data/studies/`, `pyproject.toml`, `uv.lock`, `docs/`, `frontend/`.
+- Do not touch: `contracts.py`, `problem.py`, `pipeline.py`, `qubo/`, `quantum/`, `classical/`, `metrics.py`, `frontier.py`, `verdict.py`, `contracts/`, `backend/data/studies/`, `pyproject.toml`, `uv.lock`, `docs/`, `TEAMS/`, `frontend/`.
 
 ## Files (exact)
 
@@ -72,4 +72,13 @@ uv run uvicorn qportfolio.api.main:app --reload --reload-dir qportfolio --port 8
 - [ ] All scenarios above exist as pytest tests and pass; full suite green.
 - [ ] Routes and JSON shapes match CONTRACTS section 2 exactly; no traceback ever reaches a client.
 - [ ] When U10 merges, `test_api.py` still passes unchanged against the real pipeline (or only the fixture changes).
-- [ ] Committed on branch `team-2/api`, PR to `main`; summary posted.
+- [ ] Committed and pushed to `team-2/work`; 3-line summary printed (Wahab opens the PR and merges).
+
+## When finished
+
+1. Run the verify command above.
+2. If it fails, fix it only inside your owned paths and run it again (up to 3 tries). If it still fails, stop and print the error.
+3. When it passes: `git add -A`, then `git commit -m "team-2: U11 <short summary>"`.
+4. Then `git push -u origin team-2/work`. Never force-push. Never push to `main`.
+5. Print a 3-line summary: what was built, the test result, and any known gap.
+6. If git reports a conflict or asks for a login, stop and say so. Do not resolve it; Wahab does.

@@ -62,7 +62,10 @@ prescreen(market, k, qubit_budget, sector_cap, rf=0.0557) -> ScreenInfo   # see 
 linear_costs(tickers, k, holdings_weights: dict[str, float]) -> tuple[np.ndarray, float]   # tc(x) = lin·x + const
 to_shares(tickers, prices, capital, selection) -> PortfolioOut              # JSON §2.6 "portfolio"
 out_of_sample(market, selection, rf=0.0557) -> OOS                          # JSON §2.6 "oos"
+benchmark_oos(market, rf=0.0557) -> OOS                                     # ^NSEI over the test window -> "benchmarks.nifty50"
 ```
+
+`prescreen` accounts for sector-cap slack bits itself; the pipeline passes `qubit_budget = qubit_cap - 3` when `target_return` is set (3-bit return slack). The pipeline converts `RunRequest.holdings` (shares) to weights before `linear_costs`.
 
 `DEFAULT_WINDOWS`: est 2023-10-01 → 2025-09-30, test 2025-10-01 → 2026-09-30. Constants: `RF = 0.0557`, `C_BUY = 0.001187`, `C_SELL = 0.001037`.
 
@@ -213,7 +216,7 @@ Base path is `/api`. Every response is JSON. An error body looks like `{"detail"
   "verdict": {"level": "near",
               "headline": "QAOA found a portfolio within 0.8% of the exact optimum.",
               "details": ["It sampled the exact optimum with probability 8.3%, 17x more often than a random guess (0.48%).",
-                          "Brute force solved this 10-stock instance exactly in 0.04 s; no speed advantage is claimed at this size."]},
+                          "Brute force solved this 10-stock instance exactly in 0.04 s; no speed benefit is claimed at this size."]},
   "recommended": "brute_force"
 }
 ```

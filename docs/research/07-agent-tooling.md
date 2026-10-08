@@ -8,7 +8,7 @@
 - **Skip `.agents/workflows/`.** Workflows are sunset on 2026-10-19.
 - **Skip `.agents/skills/`.** Claude doesn't read that path.
 - **`.agents/rules/*.md` only for glob-scoped rules.** Each needs valid `trigger:` frontmatter, otherwise the rule is silently dropped.
-- **Per-team brief:** `docs/teams/TEAM-N.md`. Plain markdown, readable by both tools.
+- **Per-team brief:** `TEAMS/TEAM-N-<tool>-<area>/START-HERE.md`, with one `PROMPT-*.md` file per unit next to it. Plain markdown, readable by both tools.
 
 ## Per-team settings
 - **Antigravity:**
@@ -21,9 +21,9 @@
 - **Claude Code:** `claude --worktree team-1 --permission-mode plan`, or plan mode via Shift+Tab.
 
 ## Kickoff prompt pattern (both tools)
-"Read AGENTS.md and docs/teams/TEAM-N.md. Plan first and list target files. Do not edit outside your Owned paths. Run `<verify cmd>`. Stop at the plan for approval."
+"Read AGENTS.md and TEAMS/TEAM-N-<tool>-<area>/START-HERE.md. Plan first and list target files. Do not edit outside your Owned paths. Run `<verify cmd>`. Stop at the plan for approval."
 - Antigravity: attach the files with `@`.
-- Claude Code: use `@docs/teams/TEAM-N.md`.
+- Claude Code: use `@TEAMS/TEAM-N-<tool>-<area>/PROMPT-1-<unit>.md`.
 
 ## Prompting tips (Antigravity official CLI best practices)
 - Split each task into three phases: explore → plan → execute.

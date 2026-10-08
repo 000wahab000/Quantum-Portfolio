@@ -7,12 +7,13 @@ Evidence + demo phase (T0+4h to T0+5h). Depends on U10 to U14. All teams contrib
 ## Read first
 
 - `AGENTS.md`
-- `docs/teams/TEAM-1.md` (Integrator duties)
+- `TEAMS/CONTRACTS.md` (sections 1 and 2)
+- `TEAMS/TEAM-1-claude-quantum-core/START-HERE.md` (Integrator duties)
 - Plan `docs/plans/2026-10-08-2115-feat-quantum-portfolio-optimiser-plan.md`: section "U15. Integration, offline demo hardening, README", "Verification Contract", "Definition of Done", AE6
 
 ## Process
 
-Plan first, list the steps and files, and stop for review before editing. Edit only owned paths; route fixes in other teams' areas to their owners with the owner's `99-integration-fix.md` prompt.
+Plan first, list the steps and files, and stop for review before editing. Edit only owned paths; route fixes in other teams' areas to their owners with the owner's `PROMPT-FIX-integration.md` prompt.
 
 ## Goal
 
@@ -59,3 +60,12 @@ cd ..\frontend; npm run build
 - [ ] Every R1 to R22 visible in the app or on the Evidence page.
 - [ ] README lets a judge run the demo; no stray files or abandoned experiments in the diff.
 - [ ] Each team's brief done-list ticked and handoff notes posted.
+
+## When finished
+
+1. Run the verify command above.
+2. If it fails, fix it only inside your owned paths and run it again (up to 3 tries). If it still fails, stop and print the error.
+3. When it passes: `git add -A`, then `git commit -m "team-1: U15 <short summary>"`.
+4. Then `git push -u origin team-1/work`. Never force-push. Never push to `main`.
+5. Print a 3-line summary: what was built, the test result, and any known gap.
+6. If git reports a conflict or asks for a login, stop and say so. Do not resolve it; Wahab does.

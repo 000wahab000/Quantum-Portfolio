@@ -2,13 +2,13 @@ Paste this whole file into your agent (or @-mention it). Team 2, unit U4.
 
 # TEAM-2 · U4 — Pre-screen, costs, allocation, out-of-sample
 
-Build phase (T0 to T0+2.5h). Depends on U1 and U3 (U3 merged, or on your branch). Branch `team-2/screen-costs`.
+Build phase (T0 to T0+2.5h). Depends on U1 and U3 (U3 merged, or on your branch). Branch `team-2/work`.
 
 ## Read first
 
 - `AGENTS.md`
-- `docs/teams/CONTRACTS.md`: section 1.2 (`prescreen`, `linear_costs`, `to_shares`, `out_of_sample`), section 2.4 (`ScreenInfo`), section 2.6 (`portfolio` and `oos` blocks)
-- `docs/teams/TEAM-2.md`
+- `TEAMS/CONTRACTS.md`: section 1.2 (`prescreen`, `linear_costs`, `to_shares`, `out_of_sample`), section 2.4 (`ScreenInfo`), section 2.6 (`portfolio` and `oos` blocks)
+- `TEAMS/TEAM-2-antigravity-data-api/DETAILS-for-the-agent.md`
 - Plan `docs/plans/2026-10-08-2115-feat-quantum-portfolio-optimiser-plan.md`: KTD5, KTD11, section "U4. Pre-screen, costs, allocation, out-of-sample", AE1, AE3
 - `docs/research/06-nifty50-costs.md` (cost model, risk-free rate)
 
@@ -23,7 +23,7 @@ Supply the declared pre-screen, the cost terms for the QUBO, whole-share portfol
 ## Owned paths / Do not touch
 
 - Owned: `backend/qportfolio/data/`, `backend/qportfolio/api/`, `backend/scripts/fetch_snapshot.py`, `backend/data/nifty50.csv`, `backend/data/snapshot/`, `backend/tests/{test_data,test_screen_costs,test_api}.py`.
-- Do not touch: `contracts.py`, `problem.py`, `pipeline.py`, `qubo/`, `quantum/`, `classical/`, `metrics.py`, `frontier.py`, `verdict.py`, `contracts/`, `pyproject.toml`, `uv.lock`, `docs/`, `AGENTS.md`, `CLAUDE.md`, `frontend/`.
+- Do not touch: `contracts.py`, `problem.py`, `pipeline.py`, `qubo/`, `quantum/`, `classical/`, `metrics.py`, `frontier.py`, `verdict.py`, `contracts/`, `pyproject.toml`, `uv.lock`, `docs/`, `TEAMS/`, `AGENTS.md`, `CLAUDE.md`, `frontend/`.
 
 ## Files (exact)
 
@@ -64,4 +64,13 @@ The screen output for the default request matches the shape of `contracts/api-ex
 
 - [ ] All scenarios above exist as pytest tests and pass; full suite green.
 - [ ] Only estimation-window data feeds the screen (no look-ahead).
-- [ ] Committed on branch `team-2/screen-costs`, PR to `main`; summary posted.
+- [ ] Committed and pushed to `team-2/work`; 3-line summary printed (Wahab opens the PR and merges).
+
+## When finished
+
+1. Run the verify command above.
+2. If it fails, fix it only inside your owned paths and run it again (up to 3 tries). If it still fails, stop and print the error.
+3. When it passes: `git add -A`, then `git commit -m "team-2: U4 <short summary>"`.
+4. Then `git push -u origin team-2/work`. Never force-push. Never push to `main`.
+5. Print a 3-line summary: what was built, the test result, and any known gap.
+6. If git reports a conflict or asks for a login, stop and say so. Do not resolve it; Wahab does.

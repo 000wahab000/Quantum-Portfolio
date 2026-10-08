@@ -7,8 +7,8 @@ Evidence + demo phase (T0+4h to T0+5h). Depends on U6, U7, U8, U9 (and U3 for `b
 ## Read first
 
 - `AGENTS.md`
-- `docs/teams/CONTRACTS.md`: section 1.2 (`build_market`, `Market.subset`), 1.3, 1.4 (`brute_force`, `qaoa_metrics`), section 2.7 (`Study`)
-- `docs/teams/TEAM-1.md`
+- `TEAMS/CONTRACTS.md`: section 1.2 (`build_market`, `Market.subset`), 1.3, 1.4 (`brute_force`, `qaoa_metrics`), section 2.7 (`Study`)
+- `TEAMS/TEAM-1-claude-quantum-core/START-HERE.md`
 - Plan `docs/plans/2026-10-08-2115-feat-quantum-portfolio-optimiser-plan.md`: KTD7, KTD8, KTD10, KTD12, KTD16, section "U14. Evidence studies script + checked-in results"
 
 ## Process
@@ -64,4 +64,13 @@ uv run pytest -q
 
 - [ ] Five study JSON files committed, each with instance, seeds and wall time.
 - [ ] `GET /api/studies` lists them; the Evidence page renders all five.
-- [ ] Branch `team-1/studies`, committed, PR to `main`; summary posted (wall time, known gaps).
+- [ ] Committed and pushed to `team-1/work`; 3-line summary printed (Wahab opens the PR and merges).
+
+## When finished
+
+1. Run the verify command above.
+2. If it fails, fix it only inside your owned paths and run it again (up to 3 tries). If it still fails, stop and print the error.
+3. When it passes: `git add -A`, then `git commit -m "team-1: U14 <short summary>"`.
+4. Then `git push -u origin team-1/work`. Never force-push. Never push to `main`.
+5. Print a 3-line summary: what was built, the test result, and any known gap.
+6. If git reports a conflict or asks for a login, stop and say so. Do not resolve it; Wahab does.

@@ -7,8 +7,8 @@ Integrate phase (T0+2.5h to T0+4h). Start only when U3, U4, U8, U9 are merged to
 ## Read first
 
 - `AGENTS.md`
-- `docs/teams/CONTRACTS.md`: all of section 1 (1.1 to 1.5), sections 2.2, 2.4, 2.5, 2.6
-- `docs/teams/TEAM-1.md`
+- `TEAMS/CONTRACTS.md`: all of section 1 (1.1 to 1.5), sections 2.2, 2.4, 2.5, 2.6
+- `TEAMS/TEAM-1-claude-quantum-core/START-HERE.md`
 - Plan `docs/plans/2026-10-08-2115-feat-quantum-portfolio-optimiser-plan.md`: KTD5, KTD10, section "U10. Pipeline orchestrator", AE1, AE2, AE5
 
 ## Process
@@ -22,7 +22,7 @@ Run one `RunRequest` end to end, report progress, and return a `RunResult` that 
 ## Owned paths / Do not touch
 
 - Owned: `backend/qportfolio/pipeline.py`, `backend/tests/test_pipeline.py`.
-- Do not touch: `data/`, `api/`, `classical/`, `metrics.py`, `frontier.py`, `verdict.py`, `frontend/`. If a teammate's function misbehaves, send the owner the failing call (use their `99-integration-fix.md` prompt).
+- Do not touch: `data/`, `api/`, `classical/`, `metrics.py`, `frontier.py`, `verdict.py`, `frontend/`. If a teammate's function misbehaves, send the owner the failing call (use their `PROMPT-FIX-integration.md` prompt).
 
 ## Files (exact)
 
@@ -62,4 +62,13 @@ The default request finishes in under 60 s (about 10 assets, p <= 3, no noise, Q
 
 - [ ] All scenarios above exist as pytest tests and pass; full suite green.
 - [ ] `POST /api/runs` with the example request (TEAM-2's API) reaches `done` against the real pipeline.
-- [ ] Branch `team-1/pipeline`, committed, PR to `main`; summary posted.
+- [ ] Committed and pushed to `team-1/work`; 3-line summary printed (Wahab opens the PR and merges).
+
+## When finished
+
+1. Run the verify command above.
+2. If it fails, fix it only inside your owned paths and run it again (up to 3 tries). If it still fails, stop and print the error.
+3. When it passes: `git add -A`, then `git commit -m "team-1: U10 <short summary>"`.
+4. Then `git push -u origin team-1/work`. Never force-push. Never push to `main`.
+5. Print a 3-line summary: what was built, the test result, and any known gap.
+6. If git reports a conflict or asks for a login, stop and say so. Do not resolve it; Wahab does.

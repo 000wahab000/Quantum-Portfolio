@@ -2,6 +2,18 @@
 
 Tool: Claude Code (`claude --permission-mode plan`). Coding subagents on Sonnet, research subagents on Haiku.
 
+## Integrator checklist (you are the merger; TEAM-2/3/4 only copy and paste)
+
+TEAM-2, 3 and 4 never open PRs and never resolve conflicts. Their agents commit and push `team-N/work`; you do the rest.
+
+1. Before the event: add each teammate as a GitHub collaborator (repo Settings > Collaborators > Add people). The repo is private, so without this their `git clone` says "not found". Collect their GitHub usernames.
+2. Before anyone clones: `main` on GitHub must already contain `AGENTS.md`, `CLAUDE.md`, `TEAMS/`, and the U1 scaffold (`backend/` skeleton, `contracts/api-examples/`). Teammates clone `main` and branch from it.
+3. As pushes arrive, open one PR per team branch: `gh pr create --base main --head team-N/work --fill` (later pushes to the same branch update the same PR; open a new PR after a merge).
+4. Run the Verification Contract on each PR (`cd backend; uv sync; uv run pytest -q`, `cd frontend; npm install; npm run build`), then merge.
+5. When a branch conflicts with `main`, merge `main` into it yourself (`git checkout team-N/work; git merge origin/main`, resolve, push). Teammates never resolve conflicts.
+6. When you merge, tell the team "go" for the prompts marked "Wahab says go" in their START-HERE (TEAM-2 PROMPT-4, TEAM-3 PROMPT-3, TEAM-4 PROMPT-3). Their agents run `git pull origin main` at the start of each prompt.
+7. Check `contracts/api-examples/job_done.json` uses the wording now in CONTRACTS.md section 2.6 ("no speed benefit is claimed at this size") and nothing in the examples contains "advantage".
+
 ## Mission
 
 Build the genuine quantum part and glue everything together. Deliver one QUBO from a pluggable constraint registry with tuned penalties (R5-R7), our own QAOA loop with standard and XY mixers whose best feasible sampled bitstring is the answer (R10-R12, R15 inputs), the fake-backend noise re-run (R13), the pipeline that returns a contract-valid `RunResult` (integration of R1-R20), and the precomputed evidence studies (R12, R13, R21). You also own the frozen contracts and merge every team's branch.
@@ -26,14 +38,14 @@ Build the genuine quantum part and glue everything together. Deliver one QUBO fr
 - `backend/qportfolio/quantum/` (`ansatz.py`, `optimizers.py`, `init_points.py`, `qaoa.py`, `noise.py`)
 - `backend/scripts/{smoke.py,run_studies.py}`, `backend/data/studies/`
 - `backend/tests/{test_contracts,test_problem,test_qubo,test_qaoa,test_noise,test_pipeline}.py`
-- `contracts/`, `backend/pyproject.toml`, `backend/uv.lock`, `backend/.python-version`, `.gitignore`, `README.md`, `AGENTS.md`, `CLAUDE.md`, `docs/`
+- `contracts/`, `backend/pyproject.toml`, `backend/uv.lock`, `backend/.python-version`, `.gitignore`, `README.md`, `AGENTS.md`, `CLAUDE.md`, `docs/`, `TEAMS/`
 
 ## Do not touch
 
 - `backend/qportfolio/{data,api}/`, `backend/scripts/fetch_snapshot.py`, `backend/data/{nifty50.csv,snapshot/}` (TEAM-2).
 - `backend/qportfolio/classical/`, `backend/qportfolio/{metrics,frontier,verdict}.py` (TEAM-3).
 - `frontend/` (TEAM-4).
-- Integration fix in another team's area: hand the owner the exact fix (their `99-integration-fix.md`). Patch it yourself only if the owner is unavailable, in a separate commit titled `fix(team-N): ...`, and tell them in chat.
+- Integration fix in another team's area: teammates cannot debug, so either paste the error to their agent with their `PROMPT-FIX-integration.md`, or patch it yourself in a separate commit titled `fix(team-N): ...` and tell them in chat.
 
 ## Interfaces you provide
 
@@ -42,7 +54,7 @@ Build the genuine quantum part and glue everything together. Deliver one QUBO fr
 - §1.3: `build_qubo`, `Qubo.energy`, `Qubo.energies_all`, `tune_penalties`, `qaoa_solve`, `noisy_solve`.
 - §1.5: `pipeline.run(request, on_progress, cancel) -> RunResult` (stub returns the example until U10), and `Cancelled`.
 - §2.7: `backend/data/studies/{depth,optimizer,init,mixer,noise}.json` (TEAM-2 serves them at `/api/studies`).
-- `docs/teams/CONTRACTS.md` itself. Only you change it.
+- `TEAMS/CONTRACTS.md` itself. Only you change it.
 
 ## Interfaces you consume
 
@@ -54,7 +66,7 @@ Build the genuine quantum part and glue everything together. Deliver one QUBO fr
 
 ```
 cd "D:\wahab stuff\wahab code\Quantum-Portfolio"
-claude --worktree team-1 --permission-mode plan     # or: claude --permission-mode plan, then git checkout -b team-1/<topic>
+claude --worktree team-1 --permission-mode plan     # or: claude --permission-mode plan, then git checkout -b team-1/work
 $env:PYTHONUTF8="1"
 cd backend; uv python pin 3.13; uv sync             # first sync ~10 min
 uv run pytest -q; uv run python scripts/smoke.py    # both must pass before you start
@@ -65,18 +77,18 @@ uv run pytest -q; uv run python scripts/smoke.py    # both must pass before you 
 
 ## Prompts (run in order)
 
-Claude Code: type `@docs/teams/prompts/TEAM-1/02-U5-qubo.md` (or any file below) and send. Antigravity users type `@` and pick the file. Each file is self-contained.
+Claude Code: type `@TEAMS/TEAM-1-claude-quantum-core/PROMPT-2-U5-qubo.md` (or any file below) and send. Each file is self-contained and ends with a "When finished" section (verify, commit, push `team-1/work`).
 
 | Prompt file | Unit | When to run |
 |---|---|---|
-| [01-U1-scaffold-contracts.md](prompts/TEAM-1/01-U1-scaffold-contracts.md) | U1 | Prework, only if not already on `main` |
-| [02-U5-qubo.md](prompts/TEAM-1/02-U5-qubo.md) | U5 | T0 (first unit) |
-| [03-U6-qaoa.md](prompts/TEAM-1/03-U6-qaoa.md) | U6 | After U5 |
-| [04-U7-noise.md](prompts/TEAM-1/04-U7-noise.md) | U7 | After U6, T0+2.5h |
-| [05-U10-pipeline.md](prompts/TEAM-1/05-U10-pipeline.md) | U10 | After U3, U4, U8, U9 are merged |
-| [06-U14-studies.md](prompts/TEAM-1/06-U14-studies.md) | U14 | After U7 and U10; start the long run early |
-| [07-U15-integration.md](prompts/TEAM-1/07-U15-integration.md) | U15 | T0+4h |
-| [99-integration-fix.md](prompts/TEAM-1/99-integration-fix.md) | any | When an integration failure appears |
+| [PROMPT-1-U1-scaffold-contracts.md](PROMPT-1-U1-scaffold-contracts.md) | U1 | Prework, only if not already on `main` |
+| [PROMPT-2-U5-qubo.md](PROMPT-2-U5-qubo.md) | U5 | T0 (first unit) |
+| [PROMPT-3-U6-qaoa.md](PROMPT-3-U6-qaoa.md) | U6 | After U5 |
+| [PROMPT-4-U7-noise.md](PROMPT-4-U7-noise.md) | U7 | After U6, T0+2.5h |
+| [PROMPT-5-U10-pipeline.md](PROMPT-5-U10-pipeline.md) | U10 | After U3, U4, U8, U9 are merged |
+| [PROMPT-6-U14-studies.md](PROMPT-6-U14-studies.md) | U14 | After U7 and U10; start the long run early |
+| [PROMPT-7-U15-integration.md](PROMPT-7-U15-integration.md) | U15 | T0+4h |
+| [PROMPT-FIX-integration.md](PROMPT-FIX-integration.md) | any | When an integration failure appears |
 
 ## How to verify
 
@@ -103,15 +115,14 @@ cd ..; git grep -nE "qiskit\.algorithms|qiskit_algorithms|qiskit_finance|qiskit_
 
 ## Handoff
 
-- Branch `team-1/<topic>`, PR to `main`. You are the merger: self-merge only after `uv run pytest -q` passes.
+- Branch `team-1/work`, PR to `main`. You are the merger: self-merge only after `uv run pytest -q` passes.
 - Post in team chat: units done, test result line, contract changes (if any), known gaps.
 
 ## Integrator duties
 
-- Merge order: U1 first, then each TEAM branch as soon as its tests pass (TEAM-3 and TEAM-2 early, TEAM-4 when `npm run build` passes). Ask owners to rebase on `main` after each merge.
+- Merge order: U1 first, then each TEAM branch as soon as its tests pass (TEAM-3 and TEAM-2 early, TEAM-4 when `npm run build` passes). Teammates never rebase; you merge `main` into their branch if it conflicts.
 - After every merge, run the full Verification Contract (backend tests, smoke, `/api/health`, `npm run build`). Revert the merge if it breaks `main`.
-- Own contract changes: edit CONTRACTS.md, `contracts.py` and `contracts/api-examples/` in one commit and announce it. Record two small additions agreed in the briefs: `benchmark_oos(market, rf=RF)` in §1.2, and that `RunRequest.holdings` (share counts) is converted to weights by the pipeline before `linear_costs`.
-- Known fix: the example verdict text in CONTRACTS.md §2.6 says "no speed advantage is claimed", which contains the banned word "advantage" (U9 banned-phrase test). Reword it there and in `contracts/api-examples/job_done.json` (for example "no speed benefit is claimed at this size").
+- Own contract changes: edit CONTRACTS.md, `contracts.py` and `contracts/api-examples/` in one commit and announce it. CONTRACTS.md already has `benchmark_oos`, the prescreen budget rule and the holdings-to-weights note.
 - Run U15: demo rehearsal offline, phone check, README.
 - You can run `/compound-engineering:ce-work` on the plan unit by unit with Sonnet subagents; keep research on Haiku.
 - Cut order if late (plan Risks): U14 study breadth, then XY in the live UI, then the noise toggle in the live UI.

@@ -7,8 +7,8 @@ Build phase (T0 to T0+2.5h). Depends on U5.
 ## Read first
 
 - `AGENTS.md`
-- `docs/teams/CONTRACTS.md`: section 1.3 (`qaoa_solve`), section 2.2 (`qaoa` settings), section 2.3 (`Sample`), section 2.6 (`qaoa` block, `details.most_probable`, no-feasible rule)
-- `docs/teams/TEAM-1.md`, `docs/research/08-env-spike.md`, `backend/scripts/smoke.py`
+- `TEAMS/CONTRACTS.md`: section 1.3 (`qaoa_solve`), section 2.2 (`qaoa` settings), section 2.3 (`Sample`), section 2.6 (`qaoa` block, `details.most_probable`, no-feasible rule)
+- `TEAMS/TEAM-1-claude-quantum-core/START-HERE.md`, `docs/research/08-env-spike.md`, `backend/scripts/smoke.py`
 - Plan `docs/plans/2026-10-08-2115-feat-quantum-portfolio-optimiser-plan.md`: KTD1, KTD6, KTD7, KTD8, KTD9, section "U6. QAOA engine (standard + XY), optimisers, init points"
 
 ## Process
@@ -66,4 +66,13 @@ A 10-asset p=3 run with 150 iterations finishes in under 20 s.
 - [ ] All scenarios above exist as pytest tests and pass; full suite green.
 - [ ] The no-repair test stays green (honesty gate).
 - [ ] AGENTS.md banned-API `git grep` prints nothing.
-- [ ] Branch `team-1/qaoa`, committed, PR to `main`; summary posted.
+- [ ] Committed and pushed to `team-1/work`; 3-line summary printed (Wahab opens the PR and merges).
+
+## When finished
+
+1. Run the verify command above.
+2. If it fails, fix it only inside your owned paths and run it again (up to 3 tries). If it still fails, stop and print the error.
+3. When it passes: `git add -A`, then `git commit -m "team-1: U6 <short summary>"`.
+4. Then `git push -u origin team-1/work`. Never force-push. Never push to `main`.
+5. Print a 3-line summary: what was built, the test result, and any known gap.
+6. If git reports a conflict or asks for a login, stop and say so. Do not resolve it; Wahab does.

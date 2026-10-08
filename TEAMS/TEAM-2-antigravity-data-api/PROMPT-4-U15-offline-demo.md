@@ -2,13 +2,13 @@ Paste this whole file into your agent (or @-mention it). Team 2, unit U15 (your 
 
 # TEAM-2 · U15 — Offline and demo checks
 
-Evidence + demo phase (T0+4h to T0+5h). Depends on U10 to U14 being on `main` (`git pull origin main` first). Branch `team-2/offline-demo`.
+Evidence + demo phase (T0+4h to T0+5h). Depends on U10 to U14 being on `main` (`git pull origin main` first). Branch `team-2/work`.
 
 ## Read first
 
 - `AGENTS.md`
-- `docs/teams/CONTRACTS.md`: section 2.1 (`source`, `as_of`), section 1.2 (`load_prices`)
-- `docs/teams/TEAM-2.md`
+- `TEAMS/CONTRACTS.md`: section 2.1 (`source`, `as_of`), section 1.2 (`load_prices`)
+- `TEAMS/TEAM-2-antigravity-data-api/DETAILS-for-the-agent.md`
 - Plan `docs/plans/2026-10-08-2115-feat-quantum-portfolio-optimiser-plan.md`: section "U15. Integration, offline demo hardening, README", AE6
 
 ## Process
@@ -58,4 +58,13 @@ uv run uvicorn qportfolio.api.main:app --reload --reload-dir qportfolio --port 8
 
 - [ ] Offline run passes twice; phone check done.
 - [ ] Full suite green; no files outside owned paths changed.
-- [ ] PR merged and the result posted in team chat (what failed, what you fixed, known gaps).
+- [ ] Committed and pushed to `team-2/work`; 3-line summary printed (Wahab opens the PR and merges).
+
+## When finished
+
+1. Run the verify command above.
+2. If it fails, fix it only inside your owned paths and run it again (up to 3 tries). If it still fails, stop and print the error.
+3. When it passes: `git add -A`, then `git commit -m "team-2: U15 <short summary>"`.
+4. Then `git push -u origin team-2/work`. Never force-push. Never push to `main`.
+5. Print a 3-line summary: what was built, the test result, and any known gap.
+6. If git reports a conflict or asks for a login, stop and say so. Do not resolve it; Wahab does.

@@ -2,13 +2,13 @@ Paste this whole file into your agent (or @-mention it). Team 2, unit U3.
 
 # TEAM-2 · U3 — Data layer: universe, prices, windows, mu/Sigma
 
-Build phase (T0 to T0+2.5h). Depends on U1 (`git pull origin main` first; branch `team-2/data-layer`).
+Build phase (T0 to T0+2.5h). Depends on U1 (`git pull origin main` first; branch `team-2/work`).
 
 ## Read first
 
 - `AGENTS.md`
-- `docs/teams/CONTRACTS.md`: the conventions at the top, section 1.2 (`load_universe`, `load_prices`, `build_market`, `Market`)
-- `docs/teams/TEAM-2.md`
+- `TEAMS/CONTRACTS.md`: the conventions at the top, section 1.2 (`load_universe`, `load_prices`, `build_market`, `Market`)
+- `TEAMS/TEAM-2-antigravity-data-api/DETAILS-for-the-agent.md`
 - Plan `docs/plans/2026-10-08-2115-feat-quantum-portfolio-optimiser-plan.md`: KTD11, section "U3. Data layer: universe, prices, windows, mu/Sigma", AE4, AE6
 - `docs/research/08-env-spike.md` (yfinance), `docs/research/06-nifty50-costs.md` (tickers, sectors, TMPV)
 
@@ -23,7 +23,7 @@ Turn the snapshot (or a live refresh) into a `Market` for any ticker set with no
 ## Owned paths / Do not touch
 
 - Owned: `backend/qportfolio/data/`, `backend/qportfolio/api/`, `backend/scripts/fetch_snapshot.py`, `backend/data/nifty50.csv`, `backend/data/snapshot/`, `backend/tests/{test_data,test_screen_costs,test_api}.py`. Never commit `backend/data/cache/`.
-- Do not touch: `contracts.py`, `problem.py`, `pipeline.py`, `qubo/`, `quantum/`, `classical/`, `metrics.py`, `frontier.py`, `verdict.py`, `contracts/`, `pyproject.toml`, `uv.lock`, `docs/`, `AGENTS.md`, `CLAUDE.md`, `frontend/`.
+- Do not touch: `contracts.py`, `problem.py`, `pipeline.py`, `qubo/`, `quantum/`, `classical/`, `metrics.py`, `frontier.py`, `verdict.py`, `contracts/`, `pyproject.toml`, `uv.lock`, `docs/`, `TEAMS/`, `AGENTS.md`, `CLAUDE.md`, `frontend/`.
 
 ## Files (exact)
 
@@ -75,4 +75,13 @@ cd backend; uv run pytest tests/test_data.py -q; uv run pytest -q
 - [ ] All scenarios above exist as pytest tests and pass; full suite green.
 - [ ] `backend/data/snapshot/prices.parquet` committed; `backend/data/cache/` not committed.
 - [ ] pandas-3 clean (no `applymap`, chained assignment, `fillna(method=...)`); no banned APIs.
-- [ ] Committed on branch `team-2/data-layer`, PR to `main`; summary posted (files, test output, known gaps).
+- [ ] Committed and pushed to `team-2/work`; 3-line summary printed (Wahab opens the PR and merges).
+
+## When finished
+
+1. Run the verify command above.
+2. If it fails, fix it only inside your owned paths and run it again (up to 3 tries). If it still fails, stop and print the error.
+3. When it passes: `git add -A`, then `git commit -m "team-2: U3 <short summary>"`.
+4. Then `git push -u origin team-2/work`. Never force-push. Never push to `main`.
+5. Print a 3-line summary: what was built, the test result, and any known gap.
+6. If git reports a conflict or asks for a login, stop and say so. Do not resolve it; Wahab does.

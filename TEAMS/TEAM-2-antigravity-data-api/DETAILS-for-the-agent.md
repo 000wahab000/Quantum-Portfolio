@@ -1,4 +1,6 @@
-# TEAM-2 — Data layer and API
+# TEAM-2 DETAILS for the agent: Data layer and API
+
+Teammates do not need to read this file. The prompt files tell the agent to read it. Human steps are in `START-HERE.md`.
 
 Tool: Google Antigravity (Planning mode, Request review).
 
@@ -25,7 +27,7 @@ Turn NIFTY 50 prices into a leak-free `Market`, supply the declared pre-screen, 
 
 ## Do not touch
 
-- `backend/qportfolio/{contracts.py,problem.py,pipeline.py}`, `qubo/`, `quantum/`, `backend/scripts/{smoke.py,run_studies.py}`, `backend/data/studies/`, `contracts/`, `backend/pyproject.toml`, `backend/uv.lock`, `docs/`, `AGENTS.md`, `CLAUDE.md` (TEAM-1).
+- `backend/qportfolio/{contracts.py,problem.py,pipeline.py}`, `qubo/`, `quantum/`, `backend/scripts/{smoke.py,run_studies.py}`, `backend/data/studies/`, `contracts/`, `backend/pyproject.toml`, `backend/uv.lock`, `docs/`, `TEAMS/`, `AGENTS.md`, `CLAUDE.md` (TEAM-1).
 - `backend/qportfolio/classical/`, `metrics.py`, `frontier.py`, `verdict.py` (TEAM-3).
 - `frontend/` (TEAM-4).
 - Need a new dependency, a contract change, or a field missing from `contracts.py`? Ask TEAM-1 in chat.
@@ -33,7 +35,7 @@ Turn NIFTY 50 prices into a leak-free `Market`, supply the declared pre-screen, 
 ## Interfaces you provide
 
 - CONTRACTS.md §1.2 (everything in `backend/qportfolio/data/`): `load_universe`, `load_prices`, `build_market`, `Market.subset`, `prescreen`, `linear_costs`, `to_shares`, `out_of_sample`. Constants `RF`, `C_BUY`, `C_SELL`, `DEFAULT_WINDOWS`.
-- Also export `benchmark_oos(market, rf=RF)` from `data/evaluate.py` (same metrics for `^NSEI`; the pipeline uses it for `benchmarks.nifty50`). TEAM-1 will record it in §1.2.
+- Also export `benchmark_oos(market, rf=RF)` from `data/evaluate.py` (same metrics for `^NSEI`; the pipeline uses it for `benchmarks.nifty50`). It is listed in TEAMS/CONTRACTS.md §1.2.
 - `Market` is consumed by TEAM-1's pipeline and TEAM-3's `frontier(market_subset, landscape)`: keep `tickers`, `sectors`, `mu`, `sigma` in the same order everywhere.
 - §2 HTTP API, all routes: `GET /api/health`, `GET /api/universe` (§2.1), `POST /api/screen` (§2.4), `POST /api/runs`, `GET /api/runs/{job_id}` (§2.5), `DELETE /api/runs/{job_id}`, `GET /api/studies`, `GET /api/studies/{id}` (§2.7). TEAM-4 consumes these.
 
@@ -43,38 +45,6 @@ Turn NIFTY 50 prices into a leak-free `Market`, supply the declared pre-screen, 
 - §1.5 `pipeline.run(request, on_progress, cancel) -> RunResult` and `Cancelled`. A stub returns the example result until U10 merges; build U11 against the stub and change nothing when U10 lands.
 - `contracts/api-examples/*.json` as test fixtures (read-only).
 - `backend/data/studies/*.json` (written by TEAM-1 in U14). Until then the dir may be empty: `GET /api/studies` returns `[]`; tests use a temp dir with a copy of `contracts/api-examples/study_depth.json`.
-
-## Setup (do once)
-
-Antigravity settings (Settings panel):
-- Artifact review policy: Request review. Terminal command execution: Request Review.
-- Enable Sandbox Mode (Preview): ON. Non-workspace file access: OFF. Conversation mode: Planning.
-- Model: Gemini 3.1 Pro, or Claude Sonnet 5.5 if it is in your model list.
-- Start each task in a New worktree if you are comfortable with git; otherwise work Local and commit before every agent run.
-- Never use Turbo or Always proceed.
-
-Repo (PowerShell):
-
-```
-cd "D:\wahab stuff\wahab code\Quantum-Portfolio"
-git pull origin main
-git checkout -b team-2/data-layer
-$env:PYTHONUTF8="1"
-cd backend; uv python pin 3.13; uv sync     # first sync ~10 min
-uv run pytest -q
-```
-
-## Prompts (run in order)
-
-Antigravity: type `@` in the agent panel and pick the file. Claude Code users type `@docs/teams/prompts/TEAM-2/01-U3-data-layer.md`. Each file is self-contained.
-
-| Prompt file | Unit | When to run |
-|---|---|---|
-| [01-U3-data-layer.md](prompts/TEAM-2/01-U3-data-layer.md) | U3 | T0 (first unit) |
-| [02-U4-screen-costs-oos.md](prompts/TEAM-2/02-U4-screen-costs-oos.md) | U4 | After U3 is merged or on your branch |
-| [03-U11-api-jobs.md](prompts/TEAM-2/03-U11-api-jobs.md) | U11 | Integrate phase, T0+2.5h (stub pipeline is enough) |
-| [04-U15-offline-demo.md](prompts/TEAM-2/04-U15-offline-demo.md) | U15 | T0+4h, after U10 to U14 are on `main` |
-| [99-integration-fix.md](prompts/TEAM-2/99-integration-fix.md) | any | When an integration failure appears |
 
 ## How to verify
 
@@ -95,12 +65,13 @@ uv run uvicorn qportfolio.api.main:app --reload --reload-dir qportfolio --port 8
 - [ ] `backend/data/snapshot/prices.parquet` committed (50 tickers plus `^NSEI`, 2023-09-01 to 2026-10-07); `backend/data/cache/` not committed.
 - [ ] Screen output matches `contracts/api-examples/screen.json` in shape; all `/api` routes match CONTRACTS §2 and `test_api.py` passes against the stub and later the real pipeline.
 - [ ] No banned APIs (AGENTS.md git grep clean), no new dependencies, no files outside owned paths.
-- [ ] PR merged by TEAM-1 and handoff note posted.
+- [ ] Committed and pushed to `team-2/work`; 3-line summary printed (Wahab merges).
 
 ## Handoff
 
-- Branches: `team-2/data-layer`, `team-2/screen-costs`, `team-2/api`, `team-2/offline-demo` (one per task). Open a PR to `main` for each.
-- Post in team chat: units done, `uv run pytest -q` result line, known gaps, any contract question. Ping TEAM-1 to merge.
+- One branch only: `team-2/work`. The agent commits and pushes it at the end of every prompt (see "When finished" in each prompt file). Never push to `main`, never force-push.
+- Wahab (TEAM-1) opens the pull requests, merges and resolves conflicts. If `git pull origin main` reports a conflict, stop, do not resolve it, and tell the user to message Wahab.
+- Final message of every prompt: a 3-line summary (what was built, test result, known gaps).
 
 ## Pitfalls
 
